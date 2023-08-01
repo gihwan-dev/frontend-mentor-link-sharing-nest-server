@@ -1,26 +1,28 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { CreateAuthDto, CreateAuthResponseDto } from './dto/create-auth.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Auth } from './entities/auth.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(
+    @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,
+  ) {}
+  async create(createAuthDto: CreateAuthDto): Promise<CreateAuthResponseDto> {
+    const isExisting = await this.authRepository.findOne({
+      where: {
+        email: createAuthDto.email,
+      },
+    });
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+    if (isExisting) {
+      return {
+        statusCode: HttpStatus.CONFLICT,
+        message: '이미 존재하는 이메일 입니다.',
+      };
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    const createResult = await this.authRepository.create(createAuthDto);
   }
 }
