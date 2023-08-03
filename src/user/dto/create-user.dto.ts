@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export class CreateAuthDto {
+export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -9,7 +9,7 @@ export class CreateAuthDto {
   password: string;
 }
 
-export interface CreateAuthResponseDto {
+export interface CreateUserResponseDto {
   message: string;
   statusCode: number;
 }

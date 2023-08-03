@@ -1,66 +1,21 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { CreateAuthDto, CreateAuthResponseDto } from './dto/create-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Auth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
-import { comparePassword, hashPassword } from './lib/hash';
+import { comparePassword } from './lib/hash';
 import { FindOneAuthDto, UpdateAuthResponseDto } from './dto/findOne-auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     private jwtService: JwtService,
   ) {}
-  async create(createAuthDto: CreateAuthDto): Promise<CreateAuthResponseDto> {
-    try {
-      const isExisting = await this.authRepository.findOne({
-        where: {
-          email: createAuthDto.email,
-        },
-      });
-
-      if (isExisting) {
-        return {
-          statusCode: HttpStatus.CONFLICT,
-          message: '이미 존재하는 이메일 입니다.',
-        };
-      }
-
-      const hashedAuth = { ...createAuthDto };
-
-      hashedAuth.password = await hashPassword(createAuthDto.password);
-
-      const newUser = await this.authRepository.create({
-        ...hashedAuth,
-        username: '',
-      });
-
-      const createResult = await this.authRepository.save(newUser);
-
-      if (!createResult) {
-        return {
-          statusCode: HttpStatus.FORBIDDEN,
-          message: '계정을 생성하는데 실패했습니다. 다시 시도해 주세요.',
-        };
-      }
-      return {
-        statusCode: HttpStatus.CREATED,
-        message: '성공적으로 계정을 생성했습니다.',
-      };
-    } catch (e) {
-      return {
-        statusCode: HttpStatus.FORBIDDEN,
-        message:
-          e.message ?? '계정을 생성하는데 실패했습니다. 다시 시도해 주세요.',
-      };
-    }
-  }
 
   async signIn(findOneAuthDto: FindOneAuthDto): Promise<UpdateAuthResponseDto> {
     try {
-      const savedUser = await this.authRepository.findOne({
+      const savedUser = await this.userRepository.findOne({
         where: {
           email: findOneAuthDto.email,
         },
@@ -107,9 +62,5 @@ export class AuthService {
         access_token: null,
       };
     }
-  }
-
-  async findOne({ email }: { email: string }) {
-    console.log(email);
   }
 }

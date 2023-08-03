@@ -1,7 +1,7 @@
-import { Auth } from '../auth/entities/auth.entity';
+import { User } from '../user/entities/user.entity';
 
-const entities = [Auth];
+const entities = [User];
 
-export { Auth };
+export { User };
 
 export default entities;
