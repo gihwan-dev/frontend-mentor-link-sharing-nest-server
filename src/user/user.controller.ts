@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  ExecutionContext,
+  Get,
+  Post,
+  Res,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,8 +15,9 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async findOne() {
+  async findOne(context: ExecutionContext) {
     //do something
+    // console.log(req.cookies['frontend-mentor-link-sharing']);
   }
 
   @Post()

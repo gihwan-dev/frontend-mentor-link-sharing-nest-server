@@ -56,6 +56,7 @@ export class AuthService {
 
       // 아니라면 에러 메세지 전송
     } catch (e) {
+      console.error(e);
       return {
         statusCode: HttpStatus.FORBIDDEN,
         message: '로그인에 실패했습니다. 다시시도해 주세요.',

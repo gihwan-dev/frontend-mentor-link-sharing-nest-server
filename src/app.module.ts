@@ -24,6 +24,7 @@ import entities from './typeorm';
       }),
       inject: [ConfigService],
     }),
+
     AuthModule,
     UserModule,
   ],
