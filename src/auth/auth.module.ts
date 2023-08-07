@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
+      global: true,
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET'),
       }),

@@ -1,11 +1,34 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { FindOneAuthDto } from './dto/findOne-auth.dto';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @UseGuards(AuthGuard)
+  @Get()
+  async getProfile(@Req() req, @Res() res: Response) {
+    const result = await this.authService.getProfile(
+      req['frontend-mentor-link-sharing'],
+    );
+    if (result.statusCode === HttpStatus.ACCEPTED) {
+      return res.status(result.statusCode).json({ username: result.username });
+    } else {
+      return res.redirect('../login');
+    }
+  }
 
   @Post()
   async signIn(
@@ -22,10 +45,10 @@ export class AuthController {
       return response
         .setHeader('Authorization', 'Bearer ' + result.access_token)
         .cookie('frontend-mentor-link-sharing', result.access_token, {
-          domain: 'localhost',
           maxAge: 60 * 60 * 1000,
+          secure: false,
+          sameSite: 'lax',
           httpOnly: true,
-          path: '/',
         })
         .status(result.statusCode)
         .json({ message: result.message });

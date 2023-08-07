@@ -13,6 +13,39 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async getProfile({ email }: { email: string }) {
+    try {
+      if (!email) {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: '잘못된 요청입니다. 로그인 후 다시 시도해 주세요.',
+        };
+      }
+      const user = await this.userRepository.findOne({
+        where: {
+          email,
+        },
+        select: ['username'],
+      });
+
+      if (!user) {
+        return {
+          statusCode: HttpStatus.NOT_FOUND,
+          message:
+            '해당 유저를 찾지 못했습니다. 로그아웃 후 다시 시도해 주세요.',
+        };
+      }
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        username: user.username,
+      };
+    } catch {
+      return {
+        statusCode: HttpStatus.FORBIDDEN,
+      };
+    }
+  }
+
   async signIn(findOneAuthDto: FindOneAuthDto): Promise<UpdateAuthResponseDto> {
     try {
       const savedUser = await this.userRepository.findOne({
@@ -56,7 +89,6 @@ export class AuthService {
 
       // 아니라면 에러 메세지 전송
     } catch (e) {
-      console.error(e);
       return {
         statusCode: HttpStatus.FORBIDDEN,
         message: '로그인에 실패했습니다. 다시시도해 주세요.',

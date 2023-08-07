@@ -31,9 +31,9 @@ export class UserService {
 
       hashedAuth.password = await hashPassword(createUserDto.password);
 
-      const newUser = await this.userRepository.create({
+      const newUser = this.userRepository.create({
         ...hashedAuth,
-        username: '',
+        username: hashedAuth.email,
       });
 
       const createResult = await this.userRepository.save(newUser);
