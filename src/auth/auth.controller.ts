@@ -1,34 +1,61 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Response } from 'express';
+import { FindOneAuthDto } from './dto/findOne-auth.dto';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() createAuthDto: CreateAuthDto) {
-    return this.authService.create(createAuthDto);
-  }
-
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.authService.findAll();
+  async getProfile(@Req() req, @Res() res: Response) {
+    const result = await this.authService.getProfile(
+      req['frontend-mentor-link-sharing'],
+    );
+    if (result.statusCode === HttpStatus.ACCEPTED) {
+      return res.status(result.statusCode).json({ username: result.username });
+    } else {
+      return res.redirect('../login');
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @Post()
+  async signIn(
+    @Body() findOneAuthDto: FindOneAuthDto,
+    @Res() response: Response,
+  ) {
+    try {
+      const result = await this.authService.signIn(findOneAuthDto);
+      if (result.access_token === null) {
+        return response
+          .status(result.statusCode)
+          .json({ message: result.message });
+      }
+      return response
+        .setHeader('Authorization', 'Bearer ' + result.access_token)
+        .cookie('frontend-mentor-link-sharing', result.access_token, {
+          maxAge: 60 * 60 * 1000,
+          secure: false,
+          sameSite: 'lax',
+          httpOnly: true,
+        })
+        .status(result.statusCode)
+        .json({ message: result.message });
+    } catch (e) {
+      return response
+        .status(HttpStatus.FORBIDDEN)
+        .json({ message: '로그인에 실패했습니다. 다시시도해 주세요.' });
+    }
   }
 }
