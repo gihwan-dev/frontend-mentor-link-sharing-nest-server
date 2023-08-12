@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Platform } from '../../platform/entities/platform.entity';
 
 @Entity()
 export class User {
@@ -25,4 +26,7 @@ export class User {
     default: '',
   })
   password: string;
+
+  @OneToMany((type) => Platform, (platform) => platform.owner)
+  platforms: Platform[];
 }

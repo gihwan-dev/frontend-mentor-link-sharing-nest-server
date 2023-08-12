@@ -3,12 +3,14 @@ import {
   Controller,
   ExecutionContext,
   Get,
+  Patch,
   Post,
   Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -29,4 +31,7 @@ export class UserController {
 
     return response.status(result.statusCode).json({ message: result.message });
   }
+
+  @Patch()
+  async updateOne(@Body() updateUserDto: UpdateUserDto) {}
 }

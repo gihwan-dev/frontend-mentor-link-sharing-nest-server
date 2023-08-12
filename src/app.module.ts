@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { PlatformModule } from './platform/platform.module';
 import entities from './typeorm';
 
 @Module({
@@ -14,19 +15,22 @@ import entities from './typeorm';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
+        url: configService.get('POSTGRES_URL'),
         entities: entities,
         synchronize: true,
+        logging: true,
+        ssl: true,
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
       }),
       inject: [ConfigService],
     }),
-
     AuthModule,
     UserModule,
+    PlatformModule,
   ],
   controllers: [AppController],
   providers: [AppService],
