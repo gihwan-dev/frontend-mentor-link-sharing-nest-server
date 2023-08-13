@@ -1,4 +1,13 @@
-import { Body, Controller, Patch, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  InternalServerErrorException,
+  Patch,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { PlatformService } from './platform.service';
 import { UpdatePlatformDto } from './dto/update-platform.dto';
 import { AuthGuard } from '../auth/auth.guard';
@@ -8,6 +17,7 @@ export class PlatformController {
   constructor(private readonly platformService: PlatformService) {}
 
   @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.ACCEPTED)
   @Patch()
   async update(@Req() req, @Body() updatePlatformDto: UpdatePlatformDto) {
     const jwt = req['frontend-mentor-link-sharing'];
@@ -16,6 +26,9 @@ export class PlatformController {
         updatePlatformDto,
         jwt.email,
       );
-    } catch (error) {}
+      return result;
+    } catch (error) {
+      return new InternalServerErrorException();
+    }
   }
 }

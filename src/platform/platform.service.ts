@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdatePlatformDto } from './dto/update-platform.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Platform } from './entities/platform.entity';
@@ -35,7 +40,16 @@ export class PlatformService {
         return platform;
       });
 
-      const insertResult = this.platformRepository.save(newPlatforms);
-    } catch (error) {}
+      const insertResult = await this.platformRepository.save(newPlatforms);
+
+      if (!insertResult) {
+        return new BadRequestException();
+      }
+      return {
+        message: '성공적으로 추가되었습니다.',
+      };
+    } catch (error) {
+      return new InternalServerErrorException();
+    }
   }
 }

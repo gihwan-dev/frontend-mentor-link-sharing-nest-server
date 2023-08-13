@@ -10,8 +10,8 @@ export class User {
   id: number;
 
   @Column({
-    nullable: false,
-    default: '',
+    nullable: true,
+    default: null,
   })
   username: string;
 
@@ -26,6 +26,18 @@ export class User {
     default: '',
   })
   password: string;
+
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  imageURL: string;
+
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  contactEmail: string;
 
   @OneToMany((type) => Platform, (platform) => platform.owner)
   platforms: Platform[];

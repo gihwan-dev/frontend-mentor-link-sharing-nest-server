@@ -3,14 +3,19 @@ import {
   Controller,
   ExecutionContext,
   Get,
+  HttpCode,
+  HttpStatus,
   Patch,
   Post,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -32,6 +37,11 @@ export class UserController {
     return response.status(result.statusCode).json({ message: result.message });
   }
 
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.ACCEPTED)
   @Patch()
-  async updateOne(@Body() updateUserDto: UpdateUserDto) {}
+  async updateOne(@Body() updateUserDto: UpdateUserDto, @Req() req) {
+    const jwt = req['frontend-mentor-link-sharing'];
+    return await this.userService.updateOne(updateUserDto, jwt);
+  }
 }
