@@ -25,7 +25,7 @@ export class AuthService {
         where: {
           email,
         },
-        select: ['username'],
+        select: ['email'],
       });
 
       if (!user) {
@@ -37,7 +37,7 @@ export class AuthService {
       }
       return {
         statusCode: HttpStatus.ACCEPTED,
-        username: user.username,
+        email: user.email,
       };
     } catch {
       return {

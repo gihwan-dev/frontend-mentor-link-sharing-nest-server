@@ -11,17 +11,44 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from './entities/user.entity';
 import { CreateUserDto, CreateUserResponseDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { saveImageHandler } from './lib/image-lib';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class UserService {
+  private readonly uploadPath = path.join(__dirname, '..', '..', 'images');
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private jwtService: JwtService,
   ) {}
 
+  async upload(file: Express.Multer.File, email: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        '유저 정보를 조회하는데 실패했습니다. 다시 시도해 주세요.',
+      );
+    }
+
+    if (!fs.existsSync(this.uploadPath)) {
+      fs.mkdirSync(this.uploadPath, { recursive: true });
+    }
+
+    const filePath = path.join(this.uploadPath, `${user.id}` + '.jpg');
+
+    await fs.promises.writeFile(filePath, file.buffer);
+
+    return {
+      message: '성공적으로 업데이트 했습니다.',
+    };
+  }
+
   async updateOne(updateUserDto: UpdateUserDto, jwt) {
-    console.log(updateUserDto.imageURL);
     const user = await this.userRepository.findOne({
       where: {
         email: jwt.email,
@@ -34,15 +61,12 @@ export class UserService {
       );
     }
 
-    await saveImageHandler(updateUserDto.username, updateUserDto.imageURL);
-
     const updateUser = new UpdateUserDto();
 
     updateUser.username = updateUserDto.username;
-    updateUser.contactEmail = updateUserDto.contactEmail;
-    updateUser.imageURL = `${updateUserDto.username.trim()}.*`;
+    updateUser.contactEmail = updateUserDto.contactEmail ?? '';
 
-    const updateResult = this.userRepository.update(user, updateUser);
+    const updateResult = this.userRepository.update(user.id, updateUser);
 
     if (!updateResult) {
       throw new ForbiddenException(
@@ -75,7 +99,7 @@ export class UserService {
 
       const newUser = this.userRepository.create({
         ...hashedAuth,
-        username: hashedAuth.email,
+        email: hashedAuth.email,
       });
 
       const createResult = await this.userRepository.save(newUser);

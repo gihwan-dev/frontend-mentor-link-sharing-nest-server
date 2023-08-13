@@ -4,11 +4,8 @@ import { IsNotEmpty } from 'class-validator';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsNotEmpty()
-  imageURL: string;
-
-  @IsNotEmpty()
   username: string;
 
   @IsNotEmpty()
-  contactEmail: string;
+  contactEmail: string | undefined;
 }

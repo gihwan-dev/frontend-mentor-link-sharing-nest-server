@@ -31,12 +31,6 @@ export class User {
     nullable: true,
     default: null,
   })
-  imageURL: string;
-
-  @Column({
-    nullable: true,
-    default: null,
-  })
   contactEmail: string;
 
   @OneToMany((type) => Platform, (platform) => platform.owner)
