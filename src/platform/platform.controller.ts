@@ -22,11 +22,7 @@ export class PlatformController {
   async update(@Req() req, @Body() updatePlatformDto: UpdatePlatformDto) {
     const jwt = req['frontend-mentor-link-sharing'];
     try {
-      const result = await this.platformService.update(
-        updatePlatformDto,
-        jwt.email,
-      );
-      return result;
+      return await this.platformService.update(updatePlatformDto, jwt.email);
     } catch (error) {
       return new InternalServerErrorException();
     }

@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { UpdatePlatformDto } from './dto/update-platform.dto';
@@ -20,36 +19,38 @@ export class PlatformService {
   ) {}
 
   async update(updatePlatformDto: UpdatePlatformDto, email: string) {
-    try {
-      const user = await this.userRepository.findOne({
-        where: {
-          email,
-        },
-      });
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
 
-      if (!user) {
-        return new NotFoundException();
-      }
-
-      const newPlatforms = updatePlatformDto.platforms.map((item) => {
-        const platform = new Platform();
-        platform.owner = user;
-        platform.id = item.id;
-        platform.link = item.link;
-        platform.title = item.title;
-        return platform;
-      });
-
-      const insertResult = await this.platformRepository.save(newPlatforms);
-
-      if (!insertResult) {
-        return new BadRequestException();
-      }
-      return {
-        message: '성공적으로 추가되었습니다.',
-      };
-    } catch (error) {
-      return new InternalServerErrorException();
+    if (!user) {
+      return new NotFoundException();
     }
+
+    const newPlatforms = updatePlatformDto.platforms.map((item) => {
+      const platform = new Platform();
+      platform.owner = user;
+      platform.id = item.id;
+      platform.link = item.link;
+      platform.title = item.title;
+      return platform;
+    });
+
+    const remove = await this.platformRepository.delete({ owner: user });
+
+    if (!remove.affected) {
+      throw new BadRequestException();
+    }
+
+    const insertResult = await this.platformRepository.save(newPlatforms);
+
+    if (!insertResult) {
+      return new BadRequestException();
+    }
+    return {
+      message: '성공적으로 추가되었습니다.',
+    };
   }
 }
