@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
@@ -15,6 +16,18 @@ import { AuthGuard } from '../auth/auth.guard';
 @Controller('platform')
 export class PlatformController {
   constructor(private readonly platformService: PlatformService) {}
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.ACCEPTED)
+  @Get()
+  async findMany(@Req() req) {
+    try {
+      const jwt = req['frontend-mentor-link-sharing'];
+      return await this.platformService.findMany(jwt.email);
+    } catch (error) {
+      return new InternalServerErrorException();
+    }
+  }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.ACCEPTED)

@@ -18,6 +18,32 @@ export class PlatformService {
     private readonly userRepository: Repository<User>,
   ) {}
 
+  async findMany(email: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    const platforms = await this.platformRepository.find({
+      where: {
+        owner: user,
+      },
+    });
+
+    if (!platforms) {
+      throw new NotFoundException();
+    }
+
+    return {
+      platforms,
+    };
+  }
+
   async update(updatePlatformDto: UpdatePlatformDto, email: string) {
     const user = await this.userRepository.findOne({
       where: {
@@ -38,11 +64,7 @@ export class PlatformService {
       return platform;
     });
 
-    const remove = await this.platformRepository.delete({ owner: user });
-
-    if (!remove.affected) {
-      throw new BadRequestException();
-    }
+    await this.platformRepository.delete({ owner: user });
 
     const insertResult = await this.platformRepository.save(newPlatforms);
 

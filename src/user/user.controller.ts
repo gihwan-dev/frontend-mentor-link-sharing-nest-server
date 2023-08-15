@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Body,
   Controller,
-  ExecutionContext,
   Get,
   HttpCode,
   HttpStatus,
@@ -22,15 +21,21 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as Buffer from 'buffer';
+import { createReadStream } from 'fs';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(AuthGuard)
   @Get()
-  async findOne(context: ExecutionContext) {
-    //do something
-    // console.log(req.cookies['frontend-mentor-link-sharing']);
+  async findOne(@Req() req) {
+    try {
+      const jwt = req['frontend-mentor-link-sharing'];
+      return await this.userService.findOne(jwt.email);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   @Post()
@@ -93,6 +98,19 @@ export class UserController {
       throw new InternalServerErrorException(
         '알 수 없는 오류로 이미지 저장에 실패했습니다.',
       );
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('image')
+  async getImage(@Req() req, @Res() res: Response) {
+    try {
+      const jwt = req['frontend-mentor-link-sharing'];
+      const result = await this.userService.getImage(jwt.email);
+      const file = createReadStream(result);
+      file.pipe(res);
+    } catch (error) {
+      throw new InternalServerErrorException();
     }
   }
 }

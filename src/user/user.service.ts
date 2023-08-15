@@ -22,6 +22,26 @@ export class UserService {
     private jwtService: JwtService,
   ) {}
 
+  async findOne(email: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    const [firstName, lastName] = user.username.split(' ');
+
+    return {
+      firstName,
+      lastName,
+      email: user.contactEmail,
+    };
+  }
+
   async upload(file: Express.Multer.File, email: string) {
     const user = await this.userRepository.findOne({
       where: {
@@ -121,5 +141,24 @@ export class UserService {
           e.message ?? '계정을 생성하는데 실패했습니다. 다시 시도해 주세요.',
       };
     }
+  }
+
+  async getImage(email: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException();
+    }
+
+    const imagePath = path.join(this.uploadPath, `${user.id}` + '.jpg');
+
+    if (!fs.existsSync(imagePath)) {
+      throw new NotFoundException();
+    }
+
+    return imagePath;
   }
 }
