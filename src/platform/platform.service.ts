@@ -5,17 +5,17 @@ import {
 } from '@nestjs/common';
 import { UpdatePlatformDto } from './dto/update-platform.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Platform } from './entities/platform.entity';
+import { Platforms } from './entities/platform.entity';
 import { Repository } from 'typeorm';
-import { User } from '../user/entities/user.entity';
+import { Users } from '../user/entities/user.entity';
 
 @Injectable()
 export class PlatformService {
   constructor(
-    @InjectRepository(Platform)
-    private readonly platformRepository: Repository<Platform>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(Platforms)
+    private readonly platformRepository: Repository<Platforms>,
+    @InjectRepository(Users)
+    private readonly userRepository: Repository<Users>,
   ) {}
 
   async findMany(email: string) {
@@ -56,7 +56,7 @@ export class PlatformService {
     }
 
     const newPlatforms = updatePlatformDto.platforms.map((item) => {
-      const platform = new Platform();
+      const platform = new Platforms();
       platform.owner = user;
       platform.id = item.id;
       platform.link = item.link;

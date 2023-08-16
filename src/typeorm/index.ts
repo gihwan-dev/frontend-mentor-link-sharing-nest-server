@@ -1,8 +1,8 @@
-import { User } from '../user/entities/user.entity';
-import { Platform } from '../platform/entities/platform.entity';
+import { Users } from '../user/entities/user.entity';
+import { Platforms } from '../platform/entities/platform.entity';
 
-const entities = [User, Platform];
+const entities = [Users, Platforms];
 
-export { User, Platform };
+export { Users, Platforms };
 
 export default entities;

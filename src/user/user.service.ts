@@ -7,19 +7,17 @@ import {
 import { hashPassword } from '../auth/lib/hash';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
-import { User } from './entities/user.entity';
 import { CreateUserDto, CreateUserResponseDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Users } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   private readonly uploadPath = path.join(__dirname, '..', '..', 'images');
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    private jwtService: JwtService,
+    @InjectRepository(Users) private readonly userRepository: Repository<Users>,
   ) {}
 
   async findOne(email: string) {

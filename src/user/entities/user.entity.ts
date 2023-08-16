@@ -1,8 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Platform } from '../../platform/entities/platform.entity';
+import { Platforms } from '../../platform/entities/platform.entity';
 
 @Entity()
-export class User {
+export class Users {
   @PrimaryGeneratedColumn({
     type: 'bigint',
     name: 'user_id',
@@ -33,6 +33,6 @@ export class User {
   })
   contactEmail: string;
 
-  @OneToMany((type) => Platform, (platform) => platform.owner)
-  platforms: Platform[];
+  @OneToMany((type) => Platforms, (platforms) => platforms.owner)
+  platforms: Platforms[];
 }

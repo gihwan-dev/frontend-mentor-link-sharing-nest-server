@@ -1,8 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
-import { User } from '../../user/entities/user.entity';
+import { Users } from '../../user/entities/user.entity';
 
 @Entity()
-export class Platform {
+export class Platforms {
   @PrimaryColumn({
     type: 'text',
     name: 'platform_id',
@@ -21,10 +21,10 @@ export class Platform {
   })
   link: string;
 
-  @ManyToOne(() => User, (user) => user.platforms, {
+  @ManyToOne(() => Users, (users) => users.platforms, {
     nullable: false,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'owner' })
-  owner: User;
+  owner: Users;
 }

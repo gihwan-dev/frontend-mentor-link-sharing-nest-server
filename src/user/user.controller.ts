@@ -20,7 +20,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import * as Buffer from 'buffer';
 import { createReadStream } from 'fs';
 
 @Controller('user')

@@ -24,7 +24,7 @@ export class AuthController {
       req['frontend-mentor-link-sharing'],
     );
     if (result.statusCode === HttpStatus.ACCEPTED) {
-      return res.status(result.statusCode).json({ email: result.email });
+      return res.status(result.statusCode).json({ id: result.id });
     } else {
       return res.redirect('../login');
     }

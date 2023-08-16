@@ -4,12 +4,12 @@ import { Repository } from 'typeorm';
 import { comparePassword } from './lib/hash';
 import { FindOneAuthDto, UpdateAuthResponseDto } from './dto/findOne-auth.dto';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../user/entities/user.entity';
+import { Users } from '../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Users) private readonly userRepository: Repository<Users>,
     private jwtService: JwtService,
   ) {}
 
@@ -25,7 +25,7 @@ export class AuthService {
         where: {
           email,
         },
-        select: ['email'],
+        select: ['id'],
       });
 
       if (!user) {
@@ -37,7 +37,7 @@ export class AuthService {
       }
       return {
         statusCode: HttpStatus.ACCEPTED,
-        email: user.email,
+        id: user.id,
       };
     } catch {
       return {
