@@ -19,6 +19,7 @@ import entities from './typeorm';
         entities: entities,
         synchronize: true,
         logging: true,
+        logger: 'advanced-console',
         ssl: true,
         extra: {
           ssl: {
