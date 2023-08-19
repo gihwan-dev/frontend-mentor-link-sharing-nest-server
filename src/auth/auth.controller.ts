@@ -48,7 +48,8 @@ export class AuthController {
         .cookie('frontend-mentor-link-sharing', result.access_token, {
           maxAge: 60 * 60 * 1000,
           httpOnly: true,
-          domain: '.localhost',
+          path: '/',
+          domain: 'localhost',
         })
         .status(result.statusCode)
         .json({ message: result.message });
