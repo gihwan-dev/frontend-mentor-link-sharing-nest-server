@@ -43,10 +43,8 @@ let AuthController = exports.AuthController = class AuthController {
                 .setHeader('Authorization', 'Bearer ' + result.access_token)
                 .cookie('frontend-mentor-link-sharing', result.access_token, {
                 maxAge: 60 * 60 * 1000,
-                domain: '.localhost',
-                sameSite: 'none',
-                secure: false,
                 httpOnly: true,
+                domain: '.localhost',
             })
                 .status(result.statusCode)
                 .json({ message: result.message });
