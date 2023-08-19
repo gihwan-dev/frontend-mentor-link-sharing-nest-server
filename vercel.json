@@ -1,15 +1,18 @@
 {
   "version": 2,
+  "name": "link-sharing-api",
+  "buildCommand": "npm start",
+  "installCommand": "npm install",
   "builds": [
     {
-      "src": "src/main.ts",
+      "src": "dist/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/main.ts",
+      "dest": "dist/main.ts",
       "methods": [
         "GET",
         "POST",
@@ -21,7 +24,7 @@
   ],
   "headers": [
     {
-      "source": "http://localhost:3000/(.*)",
+      "source": "/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "*" },
