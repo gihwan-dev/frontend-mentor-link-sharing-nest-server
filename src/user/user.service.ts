@@ -159,4 +159,14 @@ export class UserService {
 
     return imagePath;
   }
+
+  async getImagePublic(id: string) {
+    const imagePath = path.join(this.uploadPath, `${id}` + '.jpg');
+
+    if (!fs.existsSync(imagePath)) {
+      throw new NotFoundException();
+    }
+
+    return imagePath;
+  }
 }

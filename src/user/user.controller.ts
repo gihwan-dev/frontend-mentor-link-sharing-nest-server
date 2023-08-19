@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Patch,
   Post,
   Req,
@@ -106,6 +107,17 @@ export class UserController {
     try {
       const jwt = req['frontend-mentor-link-sharing'];
       const result = await this.userService.getImage(jwt.email);
+      const file = createReadStream(result);
+      file.pipe(res);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Get('image/:id')
+  async getImagePublic(@Param('id') param, @Res() res: Response) {
+    try {
+      const result = await this.userService.getImagePublic(param);
       const file = createReadStream(result);
       file.pipe(res);
     } catch (error) {
