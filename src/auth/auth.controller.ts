@@ -49,7 +49,8 @@ export class AuthController {
           maxAge: 60 * 60 * 1000,
           domain: '.localhost',
           sameSite: 'none',
-          secure: true,
+          secure: false,
+          httpOnly: true,
         })
         .status(result.statusCode)
         .json({ message: result.message });
