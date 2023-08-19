@@ -37,6 +37,7 @@ export class AuthController {
   ) {
     try {
       const result = await this.authService.signIn(findOneAuthDto);
+      console.log(result);
       if (result.access_token === null) {
         return response
           .status(result.statusCode)
@@ -46,9 +47,7 @@ export class AuthController {
         .setHeader('Authorization', 'Bearer ' + result.access_token)
         .cookie('frontend-mentor-link-sharing', result.access_token, {
           maxAge: 60 * 60 * 1000,
-          secure: false,
           sameSite: 'lax',
-          httpOnly: true,
         })
         .status(result.statusCode)
         .json({ message: result.message });
