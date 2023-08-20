@@ -7,6 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { signedCookie, signedCookies } from 'cookie-parser';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -17,7 +18,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    console.log(request.headers);
+    console.log(request);
     const token = this.extractTokenFromHeader(request);
     if (!token) {
       throw new UnauthorizedException();
@@ -34,6 +35,9 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
+    console.log(request.cookies);
+    console.log(signedCookie);
+    console.log(signedCookies);
     return request.cookies['frontend-mentor-link-sharing'];
   }
 }
