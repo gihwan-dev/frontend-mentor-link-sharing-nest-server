@@ -9,11 +9,23 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
+        allowedHeaders: [
+            'X-CSRF-Token',
+            'X-Requested-With, Accept',
+            'Accept-Version',
+            'Content-Length',
+            'Content-MD5',
+            'Content-Type',
+            'Date',
+            'X-Api-Version',
+        ],
+        exposedHeaders: ['cookies', 'cookie'],
         credentials: true,
         methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
         origin: [
             'https://frontend-mentor-link-sharing-next-front.vercel.app',
             'http://localhost:3000',
+            '*',
         ],
     });
     app.use((0, cookie_parser_1.default)());
