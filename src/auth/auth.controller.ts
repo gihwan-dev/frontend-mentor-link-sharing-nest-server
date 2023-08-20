@@ -48,7 +48,8 @@ export class AuthController {
         .cookie('frontend-mentor-link-sharing', result.access_token, {
           maxAge: 60 * 60 * 1000,
           secure: true,
-          sameSite: 'none',
+          sameSite: 'lax',
+          httpOnly: true,
           domain: 'frontend-mentor-link-sharing-next-front.vercel.app',
         })
         .status(result.statusCode)
