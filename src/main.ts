@@ -8,7 +8,7 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-    origin: process.env.CLIENT_URL,
+    origin: 'https://frontend-mentor-link-sharing-next-front.vercel.app/',
   });
   await app.listen(8000);
 }
