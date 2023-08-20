@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'fonrtend-mentor-link-sharing-gihwan-dev'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7D4D637F0C6A4163BD75BBD1E87BFF5E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_39017E30FFEE49D59B660C469C229A12 }}
           package: .
