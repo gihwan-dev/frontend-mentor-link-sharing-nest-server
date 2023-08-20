@@ -25,7 +25,7 @@
   ],
   "headers": [
     {
-      "source": "http://localhost:3000/(.*)",
+      "source": "https://frontend-mentor-link-sharing-next-front.vercel.app/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "*" },
