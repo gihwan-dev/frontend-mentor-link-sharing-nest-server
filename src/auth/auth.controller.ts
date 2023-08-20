@@ -49,8 +49,7 @@ export class AuthController {
           maxAge: 60 * 60 * 1000,
           secure: true,
           sameSite: 'lax',
-          httpOnly: true,
-          domain: 'frontend-mentor-link-sharing-next-front.vercel.app',
+          domain: '.frontend-mentor-link-sharing-next-front.vercel.app',
         })
         .status(result.statusCode)
         .json({ message: result.message });
