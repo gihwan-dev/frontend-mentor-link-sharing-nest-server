@@ -4,12 +4,15 @@ import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(cookieParser());
   app.enableCors({
     credentials: true,
-    methods: ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-    origin: 'https://frontend-mentor-link-sharing-next-front.vercel.app/',
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    origin: [
+      'https://frontend-mentor-link-sharing-next-front.vercel.app',
+      'http://localhost:3000',
+    ],
   });
+  app.use(cookieParser());
   await app.listen(8000);
 }
 
