@@ -12,7 +12,7 @@ async function bootstrap() {
     ],
   });
   app.use(cookieParser());
-  await app.listen(80);
+  await app.listen(process.env.PORT || 80);
 }
 
 bootstrap();
