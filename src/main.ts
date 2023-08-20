@@ -9,11 +9,10 @@ async function bootstrap() {
     origin: [
       'https://frontend-mentor-link-sharing-next-front.vercel.app',
       'http://localhost:3000',
-      'https://https://frontend-mentor-link-sharing-nest-server.vercel.app',
     ],
   });
   app.use(cookieParser());
-  await app.listen(8000);
+  await app.listen(80);
 }
 
 bootstrap();
