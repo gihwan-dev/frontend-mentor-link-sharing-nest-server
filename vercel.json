@@ -1,18 +1,16 @@
 {
   "version": 2,
   "name": "link-sharing-api",
-  "buildCommand": "npm start",
-  "installCommand": "npm install",
   "builds": [
     {
-      "src": "dist/main.js",
+      "src": "src/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/main.js",
+      "dest": "/src/main.ts",
       "methods": [
         "GET",
         "POST",
@@ -29,7 +27,7 @@
   ],
   "headers": [
     {
-      "source": "*",
+      "source": "https://frontend-mentor-link-sharing-next-front.vercel.app/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "*" },
