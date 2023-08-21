@@ -48,10 +48,14 @@ export class AuthController {
       // });
       // my front-end domain is https://frontend-mentor-link-sharing-next-front.vercel.app and my back-end domain is https://fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net
       return response
-        .setHeader(
-          'Set-Cookie',
-          `frontend-mentor-link-sharing=${result.access_token}; HttpOnly; Path=/; Domain=fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net; Max-Age=86400; SameSite=None; Secure`,
-        )
+        .cookie('frontend-mentor-link-sharing', result.access_token, {
+          httpOnly: true,
+          path: '/',
+          domain: '.fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net',
+          maxAge: 86400,
+          sameSite: 'none',
+          secure: true,
+        })
         .status(result.statusCode)
         .json({
           message: result.message,
