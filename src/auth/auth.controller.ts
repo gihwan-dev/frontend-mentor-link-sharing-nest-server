@@ -42,10 +42,21 @@ export class AuthController {
           .status(result.statusCode)
           .json({ message: result.message });
       }
-      return response.status(result.statusCode).json({
-        message: result.message,
-        token: result.access_token,
-      });
+      // return response.status(result.statusCode).json({
+      //   message: result.message,
+      //   token: result.access_token,
+      // });
+      // my front-end domain is https://frontend-mentor-link-sharing-next-front.vercel.app and my back-end domain is https://fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net
+      return response
+        .setHeader(
+          'Set-Cookie',
+          `frontend-mentor-link-sharing=${result.access_token}; HttpOnly; Path=/; Domain=frontend-mentor-link-sharing-next-front.vercel.app; Max-Age=86400; SameSite=None; Secure`,
+        )
+        .status(result.statusCode)
+        .json({
+          message: result.message,
+          token: result.access_token,
+        });
     } catch (e) {
       return response
         .status(HttpStatus.FORBIDDEN)
