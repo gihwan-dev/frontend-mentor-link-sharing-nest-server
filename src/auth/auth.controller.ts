@@ -54,7 +54,6 @@ export class AuthController {
         .status(result.statusCode)
         .json({
           message: result.message,
-          token: result.access_token,
         });
     } catch (e) {
       return response
