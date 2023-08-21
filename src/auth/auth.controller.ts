@@ -33,7 +33,7 @@ export class AuthController {
   @Post()
   async signIn(
     @Body() findOneAuthDto: FindOneAuthDto,
-    @Res() response: Response,
+    @Res({ passthrough: true }) response: Response,
   ) {
     try {
       const result = await this.authService.signIn(findOneAuthDto);
@@ -42,10 +42,20 @@ export class AuthController {
           .status(result.statusCode)
           .json({ message: result.message });
       }
-      return response.status(result.statusCode).json({
-        message: result.message,
-        token: result.access_token,
-      });
+      return response
+        .cookie('frontend-mentor-link-sharing', result.access_token, {
+          httpOnly: true,
+          path: '/',
+          domain: '.fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net',
+          maxAge: 86400,
+          sameSite: 'none',
+          secure: true,
+        })
+        .status(result.statusCode)
+        .json({
+          message: result.message,
+          token: result.access_token,
+        });
     } catch (e) {
       return response
         .status(HttpStatus.FORBIDDEN)
