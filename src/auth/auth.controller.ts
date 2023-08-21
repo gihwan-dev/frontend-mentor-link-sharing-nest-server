@@ -50,7 +50,7 @@ export class AuthController {
       return response
         .setHeader(
           'Set-Cookie',
-          `frontend-mentor-link-sharing=${result.access_token}; HttpOnly; Path=/; Domain=frontend-mentor-link-sharing-next-front.vercel.app; Max-Age=86400; SameSite=None; Secure`,
+          `frontend-mentor-link-sharing=${result.access_token}; HttpOnly; Path=/; Domain=fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net; Max-Age=86400; SameSite=None; Secure`,
         )
         .status(result.statusCode)
         .json({
