@@ -47,7 +47,7 @@ export class AuthController {
           httpOnly: true,
           path: '/',
           domain: '.fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net',
-          maxAge: 86400,
+          maxAge: 60 * 60 * 1000,
           sameSite: 'none',
           secure: true,
         })
