@@ -33,7 +33,7 @@ export class AuthController {
   @Post()
   async signIn(
     @Body() findOneAuthDto: FindOneAuthDto,
-    @Res() response: Response,
+    @Res({ passthrough: true }) response: Response,
   ) {
     try {
       const result = await this.authService.signIn(findOneAuthDto);
