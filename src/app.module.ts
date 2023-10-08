@@ -20,12 +20,12 @@ import entities from './typeorm';
         synchronize: true,
         logging: true,
         logger: 'advanced-console',
-        ssl: true,
-        extra: {
-          ssl: {
-            rejectUnauthorized: false,
-          },
-        },
+        // ssl: true,
+        // extra: {
+        //   ssl: {
+        //     rejectUnauthorized: false,
+        //   },
+        // },
       }),
       inject: [ConfigService],
     }),

@@ -40,12 +40,8 @@ let AuthController = exports.AuthController = class AuthController {
             }
             return response
                 .cookie('frontend-mentor-link-sharing', result.access_token, {
-                httpOnly: true,
                 path: '/',
-                domain: '.fonrtend-mentor-link-sharing-gihwan-dev.azurewebsites.net',
                 maxAge: 60 * 60 * 1000,
-                sameSite: 'none',
-                secure: true,
             })
                 .status(result.statusCode)
                 .json({

@@ -34,12 +34,6 @@ exports.AppModule = AppModule = __decorate([
                     synchronize: true,
                     logging: true,
                     logger: 'advanced-console',
-                    ssl: true,
-                    extra: {
-                        ssl: {
-                            rejectUnauthorized: false,
-                        },
-                    },
                 }),
                 inject: [config_1.ConfigService],
             }),
