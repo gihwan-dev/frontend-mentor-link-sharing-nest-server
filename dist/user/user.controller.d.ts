@@ -9,6 +9,7 @@ export declare class UserController {
         firstName: string;
         lastName: string;
         email: string;
+        image: string;
     }>;
     create(createUserDto: CreateUserDto, response: Response): Promise<Response<any, Record<string, any>>>;
     updateOne(updateUserDto: UpdateUserDto, req: any): Promise<{

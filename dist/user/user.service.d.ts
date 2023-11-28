@@ -13,6 +13,7 @@ export declare class UserService {
         firstName: string;
         lastName: string;
         email: string;
+        image: string;
     }>;
     upload(req: any, res: any, email: string): Promise<void>;
     updateOne(updateUserDto: UpdateUserDto, jwt: any): Promise<{

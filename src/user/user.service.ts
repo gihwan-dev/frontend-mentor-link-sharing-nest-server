@@ -65,6 +65,7 @@ export class UserService {
       firstName,
       lastName,
       email: user.contactEmail,
+      image: user.image,
     };
   }
 

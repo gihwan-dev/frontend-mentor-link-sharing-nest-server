@@ -88,6 +88,7 @@ let UserService = class UserService {
             firstName,
             lastName,
             email: user.contactEmail,
+            image: user.image,
         };
     }
     async upload(req, res, email) {
