@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const platform_service_1 = require("./platform.service");
 const update_platform_dto_1 = require("./dto/update-platform.dto");
 const auth_guard_1 = require("../auth/auth.guard");
-let PlatformController = exports.PlatformController = class PlatformController {
+let PlatformController = class PlatformController {
     constructor(platformService) {
         this.platformService = platformService;
     }
@@ -40,6 +40,7 @@ let PlatformController = exports.PlatformController = class PlatformController {
         }
     }
 };
+exports.PlatformController = PlatformController;
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.HttpCode)(common_1.HttpStatus.ACCEPTED),

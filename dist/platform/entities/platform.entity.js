@@ -12,8 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Platforms = void 0;
 const typeorm_1 = require("typeorm");
 const user_entity_1 = require("../../user/entities/user.entity");
-let Platforms = exports.Platforms = class Platforms {
+let Platforms = class Platforms {
 };
+exports.Platforms = Platforms;
 __decorate([
     (0, typeorm_1.PrimaryColumn)({
         type: 'text',

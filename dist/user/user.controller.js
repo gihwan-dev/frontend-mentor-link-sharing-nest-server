@@ -18,9 +18,8 @@ const user_service_1 = require("./user.service");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const auth_guard_1 = require("../auth/auth.guard");
-const platform_express_1 = require("@nestjs/platform-express");
 const fs_1 = require("fs");
-let UserController = exports.UserController = class UserController {
+let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
@@ -41,10 +40,10 @@ let UserController = exports.UserController = class UserController {
         const jwt = req['frontend-mentor-link-sharing'];
         return await this.userService.updateOne(updateUserDto, jwt);
     }
-    async upload(file, req) {
+    async upload(req, res) {
         try {
             const jwt = req['frontend-mentor-link-sharing'];
-            return await this.userService.upload(file, jwt.email);
+            return await this.userService.upload(req, res, jwt.email);
         }
         catch (error) {
             throw new common_1.InternalServerErrorException('알 수 없는 오류로 이미지 저장에 실패했습니다.');
@@ -72,6 +71,7 @@ let UserController = exports.UserController = class UserController {
         }
     }
 };
+exports.UserController = UserController;
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)(),
@@ -100,19 +100,9 @@ __decorate([
 ], UserController.prototype, "updateOne", null);
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image', {
-        fileFilter(req, file, callback) {
-            if (file.mimetype === 'image/jpeg' ||
-                file.mimetype === 'image/jpg' ||
-                file.mimetype === 'image/png') {
-                return callback(null, true);
-            }
-            return callback(new common_1.BadRequestException(), false);
-        },
-    })),
     (0, common_1.Post)('image'),
-    __param(0, (0, common_1.UploadedFile)()),
-    __param(1, (0, common_1.Req)()),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)

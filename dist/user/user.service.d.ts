@@ -1,10 +1,12 @@
-/// <reference types="multer" />
+/// <reference types="qs" />
+/// <reference types="express" />
 import { Repository } from 'typeorm';
 import { CreateUserDto, CreateUserResponseDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Users } from './entities/user.entity';
 export declare class UserService {
     private readonly userRepository;
+    uploadToS3: import("express").RequestHandler<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>;
     private readonly uploadPath;
     constructor(userRepository: Repository<Users>);
     findOne(email: string): Promise<{
@@ -12,9 +14,7 @@ export declare class UserService {
         lastName: string;
         email: string;
     }>;
-    upload(file: Express.Multer.File, email: string): Promise<{
-        message: string;
-    }>;
+    upload(req: any, res: any, email: string): Promise<void>;
     updateOne(updateUserDto: UpdateUserDto, jwt: any): Promise<{
         message: string;
     }>;

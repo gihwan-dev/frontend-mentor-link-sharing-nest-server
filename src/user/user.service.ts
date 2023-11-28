@@ -3,19 +3,47 @@ import {
   HttpStatus,
   Injectable,
   NotFoundException,
+  Req,
+  Res,
 } from '@nestjs/common';
 import { hashPassword } from '../auth/lib/hash';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto, CreateUserResponseDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Users } from './entities/user.entity';
+import { S3Client } from '@aws-sdk/client-s3';
+import multerS3 from 'multer-s3';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Users } from './entities/user.entity';
+import multer from 'multer';
 
 @Injectable()
 export class UserService {
+  uploadToS3 = multer({
+    storage: multerS3({
+      s3: new S3Client({
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY,
+          secretAccessKey: process.env.S3_SECRET_KEY,
+        },
+        region: 'ap-northeast-2',
+      }),
+      contentType: multerS3.AUTO_CONTENT_TYPE,
+      bucket: process.env.S3_BUCKET_NAME,
+      acl: 'public-read',
+      key: function (request, file, cb) {
+        cb(
+          null,
+          `image/user/${Date.now().toString()}-${Math.random()
+            .toFixed()
+            .toString()}`,
+        );
+      },
+    }),
+  }).array('image', 1);
   private readonly uploadPath = path.join(__dirname, '..', '..', 'images');
+
   constructor(
     @InjectRepository(Users) private readonly userRepository: Repository<Users>,
   ) {}
@@ -40,7 +68,7 @@ export class UserService {
     };
   }
 
-  async upload(file: Express.Multer.File, email: string) {
+  async upload(@Req() req, @Res() res, email: string) {
     const user = await this.userRepository.findOne({
       where: {
         email,
@@ -53,17 +81,20 @@ export class UserService {
       );
     }
 
-    if (!fs.existsSync(this.uploadPath)) {
-      fs.mkdirSync(this.uploadPath, { recursive: true });
-    }
+    this.uploadToS3(req, res, async (error) => {
+      if (error) {
+        console.log(error);
+        throw new NotFoundException('이미지 갱신에 실패했습니다.');
+      }
 
-    const filePath = path.join(this.uploadPath, `${user.id}` + '.jpg');
+      const file = req.files[0]; // 업로드된 파일 정보
+      const imageUrl = file.location; // S3에 저장된 이미지 URL
 
-    await fs.promises.writeFile(filePath, file.buffer);
-
-    return {
-      message: '성공적으로 업데이트 했습니다.',
-    };
+      await this.userRepository.update(user.id, {
+        image: imageUrl,
+      });
+      res.status(201).json('이미지 갱신에 성공했습니다.');
+    });
   }
 
   async updateOne(updateUserDto: UpdateUserDto, jwt) {

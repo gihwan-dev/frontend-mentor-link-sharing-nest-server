@@ -14,8 +14,9 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/entities/user.entity");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
-let AuthModule = exports.AuthModule = class AuthModule {
+let AuthModule = class AuthModule {
 };
+exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [

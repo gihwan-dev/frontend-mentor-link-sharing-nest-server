@@ -33,6 +33,13 @@ export class Users {
   })
   contactEmail: string;
 
+  @Column({
+    type: 'text',
+    nullable: true,
+    default: null,
+  })
+  image: string;
+
   @OneToMany((type) => Platforms, (platforms) => platforms.owner)
   platforms: Platforms[];
 }

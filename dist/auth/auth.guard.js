@@ -13,7 +13,7 @@ exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
-let AuthGuard = exports.AuthGuard = class AuthGuard {
+let AuthGuard = class AuthGuard {
     constructor(configService, jwtService) {
         this.configService = configService;
         this.jwtService = jwtService;
@@ -39,6 +39,7 @@ let AuthGuard = exports.AuthGuard = class AuthGuard {
         return request.cookies['frontend-mentor-link-sharing'];
     }
 };
+exports.AuthGuard = AuthGuard;
 exports.AuthGuard = AuthGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService,

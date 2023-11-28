@@ -18,7 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const platform_entity_1 = require("./entities/platform.entity");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("../user/entities/user.entity");
-let PlatformService = exports.PlatformService = class PlatformService {
+let PlatformService = class PlatformService {
     constructor(platformRepository, userRepository) {
         this.platformRepository = platformRepository;
         this.userRepository = userRepository;
@@ -71,6 +71,7 @@ let PlatformService = exports.PlatformService = class PlatformService {
         };
     }
 };
+exports.PlatformService = PlatformService;
 exports.PlatformService = PlatformService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(platform_entity_1.Platforms)),

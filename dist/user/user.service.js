@@ -34,6 +34,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
@@ -41,12 +44,34 @@ const hash_1 = require("../auth/lib/hash");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const update_user_dto_1 = require("./dto/update-user.dto");
+const user_entity_1 = require("./entities/user.entity");
+const client_s3_1 = require("@aws-sdk/client-s3");
+const multer_s3_1 = __importDefault(require("multer-s3"));
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-const user_entity_1 = require("./entities/user.entity");
-let UserService = exports.UserService = class UserService {
+const multer_1 = __importDefault(require("multer"));
+let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
+        this.uploadToS3 = (0, multer_1.default)({
+            storage: (0, multer_s3_1.default)({
+                s3: new client_s3_1.S3Client({
+                    credentials: {
+                        accessKeyId: process.env.S3_ACCESS_KEY,
+                        secretAccessKey: process.env.S3_SECRET_KEY,
+                    },
+                    region: 'ap-northeast-2',
+                }),
+                contentType: multer_s3_1.default.AUTO_CONTENT_TYPE,
+                bucket: process.env.S3_BUCKET_NAME,
+                acl: 'public-read',
+                key: function (request, file, cb) {
+                    cb(null, `image/user/${Date.now().toString()}-${Math.random()
+                        .toFixed()
+                        .toString()}`);
+                },
+            }),
+        }).array('image', 1);
         this.uploadPath = path.join(__dirname, '..', '..', 'images');
     }
     async findOne(email) {
@@ -65,7 +90,7 @@ let UserService = exports.UserService = class UserService {
             email: user.contactEmail,
         };
     }
-    async upload(file, email) {
+    async upload(req, res, email) {
         const user = await this.userRepository.findOne({
             where: {
                 email,
@@ -74,14 +99,18 @@ let UserService = exports.UserService = class UserService {
         if (!user) {
             throw new common_1.NotFoundException('유저 정보를 조회하는데 실패했습니다. 다시 시도해 주세요.');
         }
-        if (!fs.existsSync(this.uploadPath)) {
-            fs.mkdirSync(this.uploadPath, { recursive: true });
-        }
-        const filePath = path.join(this.uploadPath, `${user.id}` + '.jpg');
-        await fs.promises.writeFile(filePath, file.buffer);
-        return {
-            message: '성공적으로 업데이트 했습니다.',
-        };
+        this.uploadToS3(req, res, async (error) => {
+            if (error) {
+                console.log(error);
+                throw new common_1.NotFoundException('이미지 갱신에 실패했습니다.');
+            }
+            const file = req.files[0];
+            const imageUrl = file.location;
+            await this.userRepository.update(user.id, {
+                image: imageUrl,
+            });
+            res.status(201).json('이미지 갱신에 성공했습니다.');
+        });
     }
     async updateOne(updateUserDto, jwt) {
         var _a;
@@ -163,6 +192,14 @@ let UserService = exports.UserService = class UserService {
         return imagePath;
     }
 };
+exports.UserService = UserService;
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, String]),
+    __metadata("design:returntype", Promise)
+], UserService.prototype, "upload", null);
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.Users)),

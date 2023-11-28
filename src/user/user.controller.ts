@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -11,16 +10,13 @@ import {
   Post,
   Req,
   Res,
-  UploadedFile,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '../auth/auth.guard';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { createReadStream } from 'fs';
 
 @Controller('user')
@@ -57,43 +53,11 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @UseInterceptors(
-    FileInterceptor('image', {
-      fileFilter(
-        req: any,
-        file: {
-          fieldname: string;
-          originalname: string;
-          encoding: string;
-          mimetype: string;
-          size: number;
-          destination: string;
-          filename: string;
-          path: string;
-          buffer: Buffer;
-        },
-        callback: (error: Error | null, acceptFile: boolean) => void,
-      ) {
-        if (
-          file.mimetype === 'image/jpeg' ||
-          file.mimetype === 'image/jpg' ||
-          file.mimetype === 'image/png'
-        ) {
-          return callback(null, true);
-        }
-        return callback(new BadRequestException(), false);
-      },
-    }),
-  )
   @Post('image')
-  async upload(
-    @UploadedFile()
-    file: Express.Multer.File,
-    @Req() req,
-  ) {
+  async upload(@Req() req, @Res() res) {
     try {
       const jwt = req['frontend-mentor-link-sharing'];
-      return await this.userService.upload(file, jwt.email);
+      return await this.userService.upload(req, res, jwt.email);
     } catch (error) {
       throw new InternalServerErrorException(
         '알 수 없는 오류로 이미지 저장에 실패했습니다.',

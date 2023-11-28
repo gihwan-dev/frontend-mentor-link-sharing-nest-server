@@ -19,8 +19,9 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_module_1 = require("./user/user.module");
 const platform_module_1 = require("./platform/platform.module");
 const typeorm_2 = __importDefault(require("./typeorm"));
-let AppModule = exports.AppModule = class AppModule {
+let AppModule = class AppModule {
 };
+exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
@@ -32,8 +33,7 @@ exports.AppModule = AppModule = __decorate([
                     url: configService.get('POSTGRES_URL'),
                     entities: typeorm_2.default,
                     synchronize: true,
-                    logging: true,
-                    logger: 'advanced-console',
+                    logging: false,
                 }),
                 inject: [config_1.ConfigService],
             }),

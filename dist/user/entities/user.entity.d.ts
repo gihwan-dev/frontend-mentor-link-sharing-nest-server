@@ -5,5 +5,6 @@ export declare class Users {
     email: string;
     password: string;
     contactEmail: string;
+    image: string;
     platforms: Platforms[];
 }

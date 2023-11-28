@@ -12,8 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
 const typeorm_1 = require("typeorm");
 const platform_entity_1 = require("../../platform/entities/platform.entity");
-let Users = exports.Users = class Users {
+let Users = class Users {
 };
+exports.Users = Users;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({
         type: 'bigint',
@@ -49,6 +50,14 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Users.prototype, "contactEmail", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'text',
+        nullable: true,
+        default: null,
+    }),
+    __metadata("design:type", String)
+], Users.prototype, "image", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)((type) => platform_entity_1.Platforms, (platforms) => platforms.owner),
     __metadata("design:type", Array)

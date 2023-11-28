@@ -18,8 +18,7 @@ import entities from './typeorm';
         url: configService.get('POSTGRES_URL'),
         entities: entities,
         synchronize: true,
-        logging: true,
-        logger: 'advanced-console',
+        logging: false,
         // ssl: true,
         // extra: {
         //   ssl: {

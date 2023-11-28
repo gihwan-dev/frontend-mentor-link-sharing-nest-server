@@ -13,8 +13,9 @@ const platform_controller_1 = require("./platform.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const platform_entity_1 = require("./entities/platform.entity");
 const user_entity_1 = require("../user/entities/user.entity");
-let PlatformModule = exports.PlatformModule = class PlatformModule {
+let PlatformModule = class PlatformModule {
 };
+exports.PlatformModule = PlatformModule;
 exports.PlatformModule = PlatformModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([platform_entity_1.Platforms, user_entity_1.Users])],

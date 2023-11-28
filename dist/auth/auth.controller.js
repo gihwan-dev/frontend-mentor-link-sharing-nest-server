@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const findOne_auth_dto_1 = require("./dto/findOne-auth.dto");
 const auth_guard_1 = require("./auth.guard");
-let AuthController = exports.AuthController = class AuthController {
+let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
@@ -55,6 +55,7 @@ let AuthController = exports.AuthController = class AuthController {
         }
     }
 };
+exports.AuthController = AuthController;
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)(),
