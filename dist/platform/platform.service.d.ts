@@ -13,4 +13,7 @@ export declare class PlatformService {
     update(updatePlatformDto: UpdatePlatformDto, email: string): Promise<NotFoundException | BadRequestException | {
         message: string;
     }>;
+    findOne(userId: string): Promise<{
+        message: string;
+    }>;
 }

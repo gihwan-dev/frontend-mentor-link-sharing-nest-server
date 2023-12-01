@@ -70,6 +70,12 @@ let PlatformService = class PlatformService {
             message: '성공적으로 추가되었습니다.',
         };
     }
+    async findOne(userId) {
+        console.log(userId);
+        return {
+            message: 'success',
+        };
+    }
 };
 exports.PlatformService = PlatformService;
 exports.PlatformService = PlatformService = __decorate([

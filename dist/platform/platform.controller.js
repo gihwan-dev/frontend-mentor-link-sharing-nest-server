@@ -39,6 +39,16 @@ let PlatformController = class PlatformController {
             return new common_1.InternalServerErrorException();
         }
     }
+    async findOne(req, param) {
+        try {
+            const userId = param;
+            console.log(userId);
+            return await this.platformService.findOne(userId);
+        }
+        catch (e) {
+            throw new common_1.InternalServerErrorException();
+        }
+    }
 };
 exports.PlatformController = PlatformController;
 __decorate([
@@ -60,6 +70,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, update_platform_dto_1.UpdatePlatformDto]),
     __metadata("design:returntype", Promise)
 ], PlatformController.prototype, "update", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlatformController.prototype, "findOne", null);
 exports.PlatformController = PlatformController = __decorate([
     (0, common_1.Controller)('platform'),
     __metadata("design:paramtypes", [platform_service_1.PlatformService])

@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
+  Param,
   Patch,
   Req,
   UseGuards,
@@ -38,6 +39,17 @@ export class PlatformController {
       return await this.platformService.update(updatePlatformDto, jwt.email);
     } catch (error) {
       return new InternalServerErrorException();
+    }
+  }
+
+  @Get(':id')
+  async findOne(@Req() req, @Param('id') param) {
+    try {
+      const userId = param as string;
+      console.log(userId);
+      return await this.platformService.findOne(userId);
+    } catch (e) {
+      throw new InternalServerErrorException();
     }
   }
 }
