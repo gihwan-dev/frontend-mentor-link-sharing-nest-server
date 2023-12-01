@@ -91,6 +91,24 @@ let UserService = class UserService {
             image: user.image,
         };
     }
+    async findOneUser(id) {
+        const user = await this.userRepository.findOne({
+            where: {
+                id: id,
+            },
+            select: {
+                email: true,
+                contactEmail: true,
+                image: true,
+                username: true,
+            },
+        });
+        if (!user) {
+            throw new common_1.NotFoundException();
+        }
+        console.log(user);
+        return user;
+    }
     async upload(req, res, email) {
         const user = await this.userRepository.findOne({
             where: {

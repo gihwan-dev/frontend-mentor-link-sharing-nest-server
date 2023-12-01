@@ -11,6 +11,7 @@ export declare class UserController {
         email: string;
         image: string;
     }>;
+    findOneUser(req: any, param: any): Promise<import("./entities/user.entity").Users>;
     create(createUserDto: CreateUserDto, response: Response): Promise<Response<any, Record<string, any>>>;
     updateOne(updateUserDto: UpdateUserDto, req: any): Promise<{
         message: string;

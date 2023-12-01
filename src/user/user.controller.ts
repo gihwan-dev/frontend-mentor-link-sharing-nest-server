@@ -34,6 +34,15 @@ export class UserController {
     }
   }
 
+  @Get(':id')
+  async findOneUser(@Req() req, @Param('id') param) {
+    try {
+      return await this.userService.findOneUser(+param);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
   @Post()
   async create(
     @Body() createUserDto: CreateUserDto,

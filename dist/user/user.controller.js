@@ -32,6 +32,14 @@ let UserController = class UserController {
             throw new common_1.InternalServerErrorException();
         }
     }
+    async findOneUser(req, param) {
+        try {
+            return await this.userService.findOneUser(+param);
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException();
+        }
+    }
     async create(createUserDto, response) {
         const result = await this.userService.create(createUserDto);
         return response.status(result.statusCode).json({ message: result.message });
@@ -80,6 +88,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "findOneUser", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),

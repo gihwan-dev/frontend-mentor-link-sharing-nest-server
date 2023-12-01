@@ -42,7 +42,6 @@ let PlatformController = class PlatformController {
     async findOne(req, param) {
         try {
             const userId = param;
-            console.log(userId);
             return await this.platformService.findOne(userId);
         }
         catch (e) {

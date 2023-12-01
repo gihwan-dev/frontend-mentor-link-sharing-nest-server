@@ -10,7 +10,5 @@ export declare class PlatformController {
     update(req: any, updatePlatformDto: UpdatePlatformDto): Promise<{
         message: string;
     }>;
-    findOne(req: any, param: any): Promise<{
-        message: string;
-    }>;
+    findOne(req: any, param: any): Promise<import("./entities/platform.entity").Platforms[]>;
 }

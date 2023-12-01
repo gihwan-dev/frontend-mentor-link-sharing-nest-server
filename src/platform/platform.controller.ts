@@ -46,7 +46,6 @@ export class PlatformController {
   async findOne(@Req() req, @Param('id') param) {
     try {
       const userId = param as string;
-      console.log(userId);
       return await this.platformService.findOne(userId);
     } catch (e) {
       throw new InternalServerErrorException();

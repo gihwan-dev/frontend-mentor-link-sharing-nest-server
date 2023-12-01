@@ -71,10 +71,17 @@ let PlatformService = class PlatformService {
         };
     }
     async findOne(userId) {
-        console.log(userId);
-        return {
-            message: 'success',
-        };
+        const platforms = await this.platformRepository.find({
+            where: {
+                owner: {
+                    id: +userId,
+                },
+            },
+        });
+        if (!platforms) {
+            throw new common_1.NotFoundException();
+        }
+        return platforms;
     }
 };
 exports.PlatformService = PlatformService;

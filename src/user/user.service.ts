@@ -69,6 +69,25 @@ export class UserService {
     };
   }
 
+  async findOneUser(id: number) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: id,
+      },
+      select: {
+        email: true,
+        contactEmail: true,
+        image: true,
+        username: true,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    console.log(user);
+    return user;
+  }
+
   async upload(@Req() req, @Res() res, email: string) {
     const user = await this.userRepository.findOne({
       where: {

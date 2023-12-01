@@ -15,6 +15,7 @@ export declare class UserService {
         email: string;
         image: string;
     }>;
+    findOneUser(id: number): Promise<Users>;
     upload(req: any, res: any, email: string): Promise<void>;
     updateOne(updateUserDto: UpdateUserDto, jwt: any): Promise<{
         message: string;
