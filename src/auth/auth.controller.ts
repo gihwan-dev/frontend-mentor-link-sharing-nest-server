@@ -57,4 +57,17 @@ export class AuthController {
         .json({ message: '로그인에 실패했습니다. 다시시도해 주세요.' });
     }
   }
+
+  @UseGuards(AuthGuard)
+  @Get('signout')
+  async signOut(@Req() req, @Res() res: Response) {
+    try {
+      console.log('here');
+      res
+        .clearCookie('frontend-mentor-link-sharing')
+        .json({ message: '로그아웃에 성공했습니다.' });
+    } catch (e) {
+      res.json({ message: '로그아웃에 실패했습니다. 다시 시도해 주세요.' });
+    }
+  }
 }

@@ -54,6 +54,17 @@ let AuthController = class AuthController {
                 .json({ message: '로그인에 실패했습니다. 다시시도해 주세요.' });
         }
     }
+    async signOut(req, res) {
+        try {
+            console.log('here');
+            res
+                .clearCookie('frontend-mentor-link-sharing')
+                .json({ message: '로그아웃에 성공했습니다.' });
+        }
+        catch (e) {
+            res.json({ message: '로그아웃에 실패했습니다. 다시 시도해 주세요.' });
+        }
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -73,6 +84,15 @@ __decorate([
     __metadata("design:paramtypes", [findOne_auth_dto_1.FindOneAuthDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
+__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Get)('signout'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "signOut", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

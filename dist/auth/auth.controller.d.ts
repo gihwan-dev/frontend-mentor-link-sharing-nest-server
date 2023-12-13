@@ -6,4 +6,5 @@ export declare class AuthController {
     constructor(authService: AuthService);
     getProfile(req: any, res: Response): Promise<void | Response<any, Record<string, any>>>;
     signIn(findOneAuthDto: FindOneAuthDto, response: Response): Promise<Response<any, Record<string, any>>>;
+    signOut(req: any, res: Response): Promise<void>;
 }
