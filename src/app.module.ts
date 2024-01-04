@@ -14,8 +14,8 @@ import entities from './typeorm';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('POSTGRES_URL'),
+        type: 'mysql',
+        url: configService.get('MYSQL_URL'),
         entities: entities,
         synchronize: true,
         logging: false,
