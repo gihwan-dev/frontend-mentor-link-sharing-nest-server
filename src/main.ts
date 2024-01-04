@@ -7,12 +7,12 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     origin: [
-      'https://frontend-mentor-link-sharing-next-front.vercel.app',
-      'http://localhost:3000',
+      'https://link-sharing.gihwan-dev.com',
+      // 'http://localhost:3000',
     ],
   });
   app.use(cookieParser());
-  await app.listen(process.env.PORT || 8000);
+  await app.listen(process.env.PORT || 3000);
 }
 
 bootstrap();
