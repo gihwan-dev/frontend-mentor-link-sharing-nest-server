@@ -40,6 +40,6 @@ export class Users {
   })
   image: string;
 
-  @OneToMany((type) => Platforms, (platforms) => platforms.owner)
+  @OneToMany(() => Platforms, (platforms) => platforms.owner)
   platforms: Platforms[];
 }

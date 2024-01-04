@@ -59,7 +59,7 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "image", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)((type) => platform_entity_1.Platforms, (platforms) => platforms.owner),
+    (0, typeorm_1.OneToMany)(() => platform_entity_1.Platforms, (platforms) => platforms.owner),
     __metadata("design:type", Array)
 ], Users.prototype, "platforms", void 0);
 exports.Users = Users = __decorate([
