@@ -15,7 +15,7 @@ async function bootstrap() {
         ],
     });
     app.use((0, cookie_parser_1.default)());
-    await app.listen(process.env.PORT || process.env.SERVER_PORT || 8080);
+    await app.listen(process.env.PORT || 8080);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
