@@ -34,6 +34,12 @@ exports.AppModule = AppModule = __decorate([
                     entities: typeorm_2.default,
                     synchronize: true,
                     logging: false,
+                    ssl: true,
+                    extra: {
+                        ssl: {
+                            rejectUnauthorized: false,
+                        },
+                    },
                 }),
                 inject: [config_1.ConfigService],
             }),

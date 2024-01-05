@@ -42,6 +42,9 @@ let AuthController = class AuthController {
                 .cookie('frontend-mentor-link-sharing', result.access_token, {
                 path: '/',
                 maxAge: 60 * 60 * 1000,
+                secure: true,
+                domain: 'link-sharing.gihwan-dev.com',
+                httpOnly: true,
             })
                 .status(result.statusCode)
                 .json({
