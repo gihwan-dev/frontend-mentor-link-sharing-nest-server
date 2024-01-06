@@ -45,9 +45,9 @@ export class AuthController {
       return response
         .cookie('frontend-mentor-link-sharing', result.access_token, {
           path: '/',
-          maxAge: 60 * 60 * 1000,
+          sameSite: "none",
           secure: true,
-          domain: '.gihwan-dev.com',
+          domain: 'azurewebsites.net',
           httpOnly: true,
         })
         .status(result.statusCode)
