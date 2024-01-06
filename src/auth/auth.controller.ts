@@ -47,7 +47,7 @@ export class AuthController {
           path: '/',
           maxAge: 60 * 60 * 1000,
           secure: true,
-          domain: 'link-sharing.gihwan-dev.com',
+          domain: '.gihwan-dev.com',
           httpOnly: true,
         })
         .status(result.statusCode)
