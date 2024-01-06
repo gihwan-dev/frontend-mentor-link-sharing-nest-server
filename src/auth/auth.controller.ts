@@ -47,7 +47,7 @@ export class AuthController {
           path: '/',
           sameSite: "none",
           secure: true,
-          domain: '.azurewebsites.net',
+          domain: '.gihwan-dev.com',
           httpOnly: true,
         })
         .status(result.statusCode)
