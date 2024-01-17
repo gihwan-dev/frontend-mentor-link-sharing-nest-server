@@ -45,9 +45,6 @@ export class AuthController {
       return response
         .cookie('frontend-mentor-link-sharing', result.access_token, {
           path: '/',
-          sameSite: "none",
-          secure: true,
-          domain: '.gihwan-dev.com',
           httpOnly: true,
         })
         .status(result.statusCode)

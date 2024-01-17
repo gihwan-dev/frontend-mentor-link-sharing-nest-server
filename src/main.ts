@@ -7,8 +7,8 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     origin: [
-      'https://link-sharing.gihwan-dev.com',
-      // 'http://localhost:3000',
+      // 'https://frontend-mentor-link-sharing-next-front.vercel.app',
+      'http://localhost:3000',
     ],
   });
   app.use(cookieParser());
